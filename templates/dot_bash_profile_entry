@@ -1,0 +1,30 @@
+
+Place the following into the .bash_profile or .bashrc file 
+to load bash stuff upon login.
+
+
+#--------------------------------------
+#load all my common stuff
+BASHFILES=~/butch_bash_profile
+export BASHFILES
+if [ -f $BASHFILES/includes ]; then
+    . $BASHFILES/includes
+fi
+#--------------------------------------
+
+
+
+Put this into the .bash_profile or .bashrc file so that
+it can be done on command instead of onload.  Allows
+your config stuff to coexist with default config
+
+
+#----wesleyt-----------
+#Used by things in my bash profile...see alias below
+BASHFILES=~/butch/butch_bash_profile
+
+#quick command to load my bash profile in this
+#user, placed here because .bash_profile not
+#loaded when just launching bash
+alias butchBash='. $BASHFILES/includes'
+#----wesleyt-----------

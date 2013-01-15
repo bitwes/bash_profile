@@ -1,0 +1,229 @@
+#!/bin/bash
+#All the stuff I want to define.
+PATH=$PATH\:/Applications/Xcode.app/Contents/Developer/usr/bin
+
+
+#BASHFILES defined in local
+#--------------
+#Aliases
+#--------------
+#CD up (copied from gary)
+alias cdu='cd ..'
+alias cdu2='cd ../../'
+alias cdu3='cd ../../../'
+alias cdu4='cd ../../../../'
+alias cdu5='cd ../../../../../'
+alias cdu6='cd ../../../../../../'
+alias cdu7='cd ../../../../../../../'
+alias cdu8='cd ../../../../../../../../'
+alias cdu9='cd ../../../../../../../../../'
+alias dirs='dirs -v'
+alias cd-='cd -'
+
+#various
+alias dot='. ~/.bash_profile'
+alias ec='emacs '
+alias ecbash='emacs $BASHFILES/*'
+alias fcount='ls -l | grep -v ^l | wc -l'
+alias untarball='tar xvf '
+alias fuser='/sbin/fuser ' #shows users of files, just wanted to remember it.
+
+#ls related
+alias la='ls -lah'
+alias ls='ls -hide='"'"'*~*'"'"' -hide='"'"'*#*'"'"' --color=tty '
+alias ll='ls -l'
+alias lshid='ls *~* *#* -a \.*~*' 
+alias lsd='ls -d */'
+alias lsf='find . -maxdepth 1 -type f | xargs ls -d '    #'ls -lh | grep -v ^d'
+alias llf='find . -maxdepth 1 -type f | xargs ls -ldh '
+alias lsl='echo DIR; lld; echo DOT; l. -lh; echo FILES; llf;'
+alias lathr='ls -lathr '
+
+alias lsx='find . -maxdepth 1 -perm /111 | xargs ls -ld --color=tty'
+alias lsxf='find . -maxdepth 1 -perm /111 -type f | xargs ls -ld '
+alias lsxd='find . -maxdepth 1 -perm /111 -type d | xargs ls -ld '
+
+alias lsshared='find . -maxdepth 1 -perm /077 | xargs ls -ld '
+alias lssharedx='find . -maxdepth 1 -perm /011 | xargs ls -ld '
+alias lssharedr='find . -maxdepth 1 -perm /044 | xargs ls -ld '
+alias lssharedw='find . -maxdepth 1 -perm /022 | xargs ls -ld '
+
+alias llext="find . -maxdepth 1 -type f -name \"*.*\" | awk -F. '{print \$NF}' | sort -u"
+alias llbyext='llext | _ls_by_extension'
+
+alias lld='lsd -lh'
+alias lldot='l. -lh'
+
+alias perldebug='perl -d -e 1'
+alias perl='perl -w'
+#------------------------------------------------------
+#used by cls, shouldn't be called alone
+#------------------------------------------------------
+_cls_from_file(){
+  echo "${txtred}"
+  cat "$1"
+  echo "${txtrst}"
+}
+
+#------------------------------------------------------
+#used by cls, shouldn't be called alone.  Mostly just
+#practice with loops and ifs.  
+#------------------------------------------------------
+_cls_from_loop(){
+  local i=0
+  local other=r
+  echo "${txtpur}"
+  for VAR in {1..40} 
+  do
+    if [ $i -eq 0 ]
+    then
+      other=' |'
+    elif [ $i -eq 1 ]
+    then
+      other=' /'
+    elif [ $i -eq 2 ]
+    then
+      other='|'
+    elif [ $i -eq 3 ]
+    then
+      other=" \\"
+    fi
+    
+    echo "          $other"
+    
+    let "i += 1"
+      
+    if [ $i -eq 4 ]
+    then
+      i=0
+    fi  
+  done
+  echo "${txtrst}"
+}
+
+#------------------------------------------------------
+#pipe lsext to this to get all files by extension.
+#This will ls by each extension unless it's an actual
+#filename, in which case it creates an array that will
+#spit them out at the end as a list of files.
+#------------------------------------------------------
+_ls_by_extension(){
+    local idx=0
+    local loop_counter=0
+    read j
+    while [ "$j" != "" ]; do
+	if [ -f ".$j" ]; then
+	    files[$idx]=$j
+	    let "idx += 1"
+        else
+	    echo "${txtund}${txtcyn}.$j${txtrst}"
+	    echo "`ls *.$j -la`"
+	    echo
+	fi
+
+        read j
+    done
+
+    if [ "$idx" -gt "0" ]; then
+    echo "${txtund}${txtcyn}Hidden Files${txtrst}"
+    while [ "$loop_counter" -lt "$idx" ]; do
+	echo ".${files[$loop_counter]}"
+	let "loop_counter += 1"
+    done
+    fi
+}
+
+
+
+
+#------------------------------------------------------
+#Clears the screen but first it prints a divider so if 
+#you scroll up it maintains some semblance of a seperation 
+#that you wanted when you cleared the screen.  if 
+#cls.txt exists then it will print the contents 
+#from there, otherwise it loops through and prints out 
+#the wavy line that was a way for me to learn vars, 
+#looping, and if statements.
+#------------------------------------------------------
+cls(){
+  if [ -f "$BASHFILES/cls.txt" ]; then
+    _cls_from_file $BASHFILES/cls.txt
+  else
+    _cls_from_loop
+  fi
+  clear screen
+}
+
+#------------------------------------------------------
+#simplifies use of find for most of what you want. 
+#pass in the value in "" and it will look for the file
+#from the current directory on down using case insenative
+#search
+#------------------------------------------------------
+fnd(){
+	find ./ -iname "$1"
+}	
+
+#------------------------------------------------------
+#simplifies grep.  does a recursive case insesative 
+#search from the current directory
+#------------------------------------------------------
+grp(){
+ grep -ir "$1" ./
+}
+
+
+#------------------------------------------------------
+#feeds the results of lshid to rm.  this allows me to
+#mananage the patter for the hiddent files in one
+#place.
+#------------------------------------------------------
+rmhid(){
+  
+  lshid -l
+  echo "${txtred}Delete these files?  (yes/<anything>)${txtwht}"
+  read yesno
+  if [ $yesno = "yes" ]; then
+    lshid | xargs rm    
+    echo "${txtred}FILES DELETED${txtwht}"
+  else
+    echo "${txtgrn}CANCELED${txtwht}"
+  fi
+}
+
+
+#------------------------------------------------------
+#Lists files using find's -mtime option.  This allows
+#you to list files by date modified.
+#
+#Parameters:
+#  $1  days old
+#      x = changed x days ago
+#     -x = changed between x days ago and today
+#     +x = changed x days ago or later
+#------------------------------------------------------
+lldays(){
+  #-ldtrh list files with details, human readable, reverse 
+  #       order by date, do not traverse sub dirs.
+  eval "find ./ -maxdepth 1 -mtime $1 | xargs ls -ldtrh --color=tty"
+}
+
+lsdays(){
+  eval "find . -maxdepth 1 -mtime $1 | xargs ls $2 -d --color=tty"
+}
+
+
+linuxversion(){
+    uname -mrs
+    cat /etc/*-release
+}
+
+mkcd(){
+  mkdir -p $1
+  cd $1
+  pwd
+}
+
+#make emacs default editor
+export EDITOR=emacs
+export VISUAL=emacs

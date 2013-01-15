@@ -1,0 +1,9 @@
+#!/bin/bash
+
+BASHFILES=~/butch_bash_profile
+export BASHFILES
+
+#Prompt
+export PS1="\e[0;32m[\u]\$ \e[m "
+
+
