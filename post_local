@@ -2,3 +2,4 @@
 
 alias ls='ls -G'
 alias github_push='git push -u origin master'
+export PS1="\u$ "
