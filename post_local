@@ -2,4 +2,13 @@
 
 alias ls='ls -G'
 alias github_push='git push -u origin master'
-export PS1="\u$ "
+
+
+get_git_branch() {
+  local br=$(git branch | grep "*" | sed 's/* //g')
+  [ -n "$br" ] && echo "$br"
+}
+
+export PS1="\u ($(get_git_branch))$ "
+
+#export PS1='u@h:w$(get_git_branch) $ '
