@@ -30,7 +30,8 @@ alias fuser='/sbin/fuser ' #shows users of files, just wanted to remember it.
 
 #ls related
 alias la='ls -lah'
-alias ls='ls -hide='"'"'*~*'"'"' -hide='"'"'*#*'"'"' --color=tty '
+#alias ls='ls -hide='"'"'*~*'"'"' -hide='"'"'*#*'"'"' --color=tty '
+alias ls='ls --color=tty '
 alias ll='ls -l'
 alias lshid='ls *~* *#* -a \.*~*' 
 alias lsd='ls -d */'

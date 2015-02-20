@@ -1,14 +1,35 @@
 #!/bin/bash
+PATH=$PATH:$BASHFILES/bin
 
-alias ls='ls -G'
-alias github_push='git push -u origin master'
+#launch explorer from cygwin
+alias explr='/bin/cygstart --explore ./'
+#chagne directory to c drive root
+alias cdc="cd c:"
+#cygwin change directory to home
+alias winhome='cd /cygdrive/c/Users/502398467'
+
+export DEVELOPMENT=/c/development
+export DESKTOP=/c/Users/502398467/Desktop
+export DOWNLOADS=/c/Users/502398467/Downloads
+export JUNK=$DESKTOP/junk
+alias tree='cmd //c tree'
+#----------------------
+#Kitchen
+#----------------------
+alias kitconv='kitchen converge > converge_log.txt & 
+tail -f converge_log.txt'
 
 
-get_git_branch() {
-  local br=$(git branch | grep "*" | sed 's/* //g')
-  [ -n "$br" ] && echo "$br"
-}
-
-export PS1="\u ($(get_git_branch))$ "
-
-#export PS1='u@h:w$(get_git_branch) $ '
+#----------------------
+#Sublime
+#----------------------
+export sublime='/c/Program\ Files/Sublime\ Text\ 2/sublime_text.exe'
+#this command is now in the ./bin/subl file.  Couldn't get to work,
+#must have been something stupid.
+#alias sublime='"$sublime&`"'
+#sublime2 () {
+  #cmd="$sublime $1 &"
+  #echo $cmd
+  #`$cmd`
+#}
+alias sublbash='subl $BASHFILES'
