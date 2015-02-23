@@ -1,0 +1,24 @@
+#!/bin/bash
+#--------------------------------------------------
+#copy to $BASHFILES.  Will be called by entry in 
+#.bash_profile.  This file is ignored in $BASHFILES.
+#--------------------------------------------------
+#these are profile files to include
+dot_it() {
+  if [ -f "$BASHFILES/$1" ] ; then
+    eval ". $BASHFILES/$1"
+  fi
+}
+
+#old "local" file is now pre_local
+#local should be removed and replaced
+#with pre_local
+
+dot_it pre_local
+dot_it main
+dot_it post_local
+
+#Optional or env dependant
+#dot_it text_format
+#dot_it cygwin
+#dot_it windows

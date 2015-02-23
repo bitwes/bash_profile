@@ -1,3 +1,4 @@
 #!/bin/sh
+#For use in windows.  launches sublime.  Accepts one parameter.  Parameter can be a directory.
 export sublime=/c/Program\ Files/Sublime\ Text\ 2/sublime_text.exe
 "$sublime" $1 &

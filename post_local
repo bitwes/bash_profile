@@ -1,35 +1,7 @@
 #!/bin/bash
-PATH=$PATH:$BASHFILES/bin
 
-#launch explorer from cygwin
-alias explr='/bin/cygstart --explore ./'
-#chagne directory to c drive root
-alias cdc="cd c:"
-#cygwin change directory to home
-alias winhome='cd /cygdrive/c/Users/502398467'
-
-export DEVELOPMENT=/c/development
-export DESKTOP=/c/Users/502398467/Desktop
-export DOWNLOADS=/c/Users/502398467/Downloads
-export JUNK=$DESKTOP/junk
-alias tree='cmd //c tree'
 #----------------------
 #Kitchen
 #----------------------
 alias kitconv='kitchen converge > converge_log.txt & 
 tail -f converge_log.txt'
-
-
-#----------------------
-#Sublime
-#----------------------
-export sublime='/c/Program\ Files/Sublime\ Text\ 2/sublime_text.exe'
-#this command is now in the ./bin/subl file.  Couldn't get to work,
-#must have been something stupid.
-#alias sublime='"$sublime&`"'
-#sublime2 () {
-  #cmd="$sublime $1 &"
-  #echo $cmd
-  #`$cmd`
-#}
-alias sublbash='subl $BASHFILES'
