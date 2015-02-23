@@ -1,7 +1,0 @@
-#!/bin/bash
-
-#----------------------
-#Kitchen
-#----------------------
-alias kitconv='kitchen converge > converge_log.txt & 
-tail -f converge_log.txt'
