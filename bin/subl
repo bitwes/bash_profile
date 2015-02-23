@@ -1,0 +1,3 @@
+#!/bin/sh
+export sublime=/c/Program\ Files/Sublime\ Text\ 2/sublime_text.exe
+"$sublime" $1 &
