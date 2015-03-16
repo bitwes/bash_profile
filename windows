@@ -3,15 +3,7 @@ export DESKTOP=/c/Users/502398467/Desktop
 export DOWNLOADS=/c/Users/502398467/Downloads
 export JUNK=$DESKTOP/junk
 
-alias tree='cmd //c tree'
-
-export sublime='/c/Program\ Files/Sublime\ Text\ 2/sublime_text.exe'
-#this command is now in the ./bin/subl file.  Couldn't get to work,
-#must have been something stupid.
-#alias sublime='"$sublime&`"'
-#sublime2 () {
-  #cmd="$sublime $1 &"
-  #echo $cmd
-  #`$cmd`
-#}
+alias tree='cmd //c tree //F'
+alias explr='explorer .'
 alias sublbash='subl $BASHFILES'
+alias man='man.sh'
