@@ -1,0 +1,6 @@
+#launch explorer from cygwin
+alias explr='/bin/cygstart --explore ./'
+#chagne directory to c drive root
+alias cdc="cd c:"
+#cygwin change directory to home
+alias winhome='cd /cygdrive/c/Users/502398467'

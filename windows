@@ -1,0 +1,9 @@
+export DEVELOPMENT=/c/development
+export DESKTOP=/c/Users/502398467/Desktop
+export DOWNLOADS=/c/Users/502398467/Downloads
+export JUNK=$DESKTOP/junk
+
+alias tree='cmd //c tree //F'
+alias explr='explorer .'
+alias sublbash='subl $BASHFILES'
+alias man='man.sh'
