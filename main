@@ -1,7 +1,7 @@
 #!/bin/bash
 #All the stuff I want to define.
 PATH=$PATH\:/Applications/Xcode.app/Contents/Developer/usr/bin
-
+PATH=$PATH:$BASHFILES/bin
 
 #BASHFILES defined in local
 #--------------
@@ -30,9 +30,10 @@ alias fuser='/sbin/fuser ' #shows users of files, just wanted to remember it.
 
 #ls related
 alias la='ls -lah'
-alias ls='ls -hide='"'"'*~*'"'"' -hide='"'"'*#*'"'"' --color=tty '
+#alias ls='ls -hide='"'"'*~*'"'"' -hide='"'"'*#*'"'"' --color=tty '
+alias ls='ls --color=tty '
 alias ll='ls -l'
-alias lshid='ls *~* *#* -a \.*~*' 
+alias lshid='ls *~* *#* -a \.*~*'
 alias lsd='ls -d */'
 alias lsf='find . -maxdepth 1 -type f | xargs ls -d '    #'ls -lh | grep -v ^d'
 alias llf='find . -maxdepth 1 -type f | xargs ls -ldh '
@@ -67,13 +68,13 @@ _cls_from_file(){
 
 #------------------------------------------------------
 #used by cls, shouldn't be called alone.  Mostly just
-#practice with loops and ifs.  
+#practice with loops and ifs.
 #------------------------------------------------------
 _cls_from_loop(){
   local i=0
   local other=r
   echo "${txtpur}"
-  for VAR in {1..40} 
+  for VAR in {1..40}
   do
     if [ $i -eq 0 ]
     then
@@ -88,15 +89,15 @@ _cls_from_loop(){
     then
       other=" \\"
     fi
-    
+
     echo "          $other"
-    
+
     let "i += 1"
-      
+
     if [ $i -eq 4 ]
     then
       i=0
-    fi  
+    fi
   done
   echo "${txtrst}"
 }
@@ -121,7 +122,7 @@ _ls_by_extension(){
 	    echo
 	fi
 
-        read j
+    read j
     done
 
     if [ "$idx" -gt "0" ]; then
@@ -134,15 +135,13 @@ _ls_by_extension(){
 }
 
 
-
-
 #------------------------------------------------------
-#Clears the screen but first it prints a divider so if 
-#you scroll up it maintains some semblance of a seperation 
-#that you wanted when you cleared the screen.  if 
-#cls.txt exists then it will print the contents 
-#from there, otherwise it loops through and prints out 
-#the wavy line that was a way for me to learn vars, 
+#Clears the screen but first it prints a divider so if
+#you scroll up it maintains some semblance of a seperation
+#that you wanted when you cleared the screen.  if
+#cls.txt exists then it will print the contents
+#from there, otherwise it loops through and prints out
+#the wavy line that was a way for me to learn vars,
 #looping, and if statements.
 #------------------------------------------------------
 cls(){
@@ -155,17 +154,17 @@ cls(){
 }
 
 #------------------------------------------------------
-#simplifies use of find for most of what you want. 
+#simplifies use of find for most of what you want.
 #pass in the value in "" and it will look for the file
 #from the current directory on down using case insenative
 #search
 #------------------------------------------------------
 fnd(){
 	find ./ -iname "$1"
-}	
+}
 
 #------------------------------------------------------
-#simplifies grep.  does a recursive case insesative 
+#simplifies grep.  does a recursive case insesative
 #search from the current directory
 #------------------------------------------------------
 grp(){
@@ -179,12 +178,12 @@ grp(){
 #place.
 #------------------------------------------------------
 rmhid(){
-  
+
   lshid -l
   echo "${txtred}Delete these files?  (yes/<anything>)${txtwht}"
   read yesno
   if [ $yesno = "yes" ]; then
-    lshid | xargs rm    
+    lshid | xargs rm
     echo "${txtred}FILES DELETED${txtwht}"
   else
     echo "${txtgrn}CANCELED${txtwht}"
@@ -203,7 +202,7 @@ rmhid(){
 #     +x = changed x days ago or later
 #------------------------------------------------------
 lldays(){
-  #-ldtrh list files with details, human readable, reverse 
+  #-ldtrh list files with details, human readable, reverse
   #       order by date, do not traverse sub dirs.
   eval "find ./ -maxdepth 1 -mtime $1 | xargs ls -ldtrh --color=tty"
 }

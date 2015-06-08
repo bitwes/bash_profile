@@ -3,3 +3,8 @@
 *.*~
 pre_local
 post_local
+post_local
+cls.txt
+
+includes
+git-aware-prompt/*
