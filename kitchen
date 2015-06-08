@@ -1,0 +1,37 @@
+#!/bin/bash
+ 
+# kitchen functions
+ 
+export DOCKER_HOST=tcp://192.168.59.103:2376
+export DOCKER_CERT_PATH=~/.boot2docker/certs/boot2docker-vm
+export DOCKER_TLS_VERIFY=1
+
+# vagrant ssh info
+alias vssh='(cd .kitchen/kitchen-vagrant/*/; vagrant ssh-config)'
+alias renewToken='/c/dev/renewToken.rb/renewToken.rb'
+alias kd='function _stupid_bash(){ export KITCHEN_DRIVER=$1; };_stupid_bash'
+
+function kyaml {
+  local k_yaml=".kitchen.$1.yml"
+  local kl_yaml=".kitchen.local.$1.yml"
+ 
+  if [ $1  == "vagrant" ] || [ $1  == "ec2" ] || [ $1  == "docker" ]; then
+    unset KITCHEN_YAML
+    unset KITCHEN_LOCAL_YAML
+ 
+    if [ -e $k_yaml ]; then
+      export KITCHEN_YAML=$k_yaml
+    fi
+    if [ -e $kl_yaml ]; then
+      export KITCHEN_LOCAL_YAML=$kl_yaml
+    fi
+  elif [[ $1 == "none" ]]; then
+    unset KITCHEN_YAML
+    unset KITCHEN_LOCAL_YAML
+  else
+    echo "Requres a parameter 'ec2', 'vagrant', 'docker' or 'none', you passed $1 "
+  fi
+ 
+  echo "KITCHEN_YAML = $KITCHEN_YAML"
+  echo "KITCHEN_LOCAL_YAML = $KITCHEN_LOCAL_YAML"
+}

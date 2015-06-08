@@ -1,0 +1,37 @@
+COLOR_RED="\033[0;31m"
+COLOR_YELLOW="\033[0;33m"
+COLOR_GREEN="\033[0;32m"
+COLOR_OCHRE="\033[38;5;95m"
+COLOR_BLUE="\033[0;34m"
+COLOR_WHITE="\033[0;37m"
+COLOR_RESET="\033[0m"
+
+function git_color {
+  local git_status="$(git status 2> /dev/null)"
+  if [[ $(echo $git_status | grep -v "working directory clean") ]]; then
+    echo -e $COLOR_RED
+  elif [[ $(echo $git_status | grep "Your branch is ahead of") ]]; then
+    echo -e $COLOR_YELLOW
+  elif [[ $(echo $git_status | grep "nothing to commit") ]]; then
+    echo -e $COLOR_GREEN
+  else
+    echo -e $COLOR_OCHRE
+  fi
+}
+
+function git_branch {
+  local git_status="$(git status 2> /dev/null)"
+  if [[ $(echo $git_status | sed 's/^On branch \([A-Za-z0-9]*\).*/\1/') ]]; then
+    local branch=$(echo $git_status | sed 's/^On branch \([A-Za-z0-9]*\).*/\1/')
+    echo "($branch)"
+  elif [[ $(echo $git_status | sed 's/^HEAD detached at \([A-Za-z0-9]*\).*/\1/') ]]; then
+    local commit=$(echo $git_status | sed 's/^HEAD detached at \([A-Za-z0-9]*\).*/\1/')
+    echo "($commit)"
+  fi
+}
+
+PS1="\[$COLOR_WHITE\]\n[\w]"                # basename of pwd
+PS1+="\[\$(git_color)\]"                    # colors git status
+PS1+="\$(git_branch)"                       # prints current branch
+PS1+="\[$COLOR_BLUE\]\$\[$COLOR_RESET\] "   # '#' for root, else '$'
+export PS1
