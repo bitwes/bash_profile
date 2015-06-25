@@ -1,0 +1,147 @@
+#!/bin/bash
+PATH=$PATH:/c/bin/hub:/c/Program\ Files/Sublime\ Text\ 2/
+PATH=$PATH:/c/Program\ Files/Putty/
+dot_it ge.sh
+dot_it git.sh
+alias rt='renewToken.rb'
+alias local_yml='cp ~/development/template.kitchen.local.yml ./.kitchen.local.yml'
+alias irb='ruby -S irb'
+#----------------------------
+#GE
+#----------------------------
+alias bastion='ssh lg398467@10.227.63.120'
+
+proxify() {
+  export HTTP_PROXY=http://http-proxy.ae.ge.com:80
+  export HTTPS_PROXY=http://http-proxy.ae.ge.com:80
+}
+unproxify() {
+  unset HTTP_PROXY
+  unset HTTPS_PROXY
+}
+#gem install
+gi() {
+  unproxify
+  gem install $1
+  wait
+  proxify
+}
+#gem update, all by default
+gu() {
+  unproxify
+  gem update $1
+  wait
+  proxify
+}
+
+
+
+#----------------------
+#Kitchen
+#----------------------
+alias kitconv='kitchen converge > converge_log.txt &
+tail -f converge_log.txt'
+
+alias kc='prox; kitchen converge'
+alias kv='prox; kitchen verify'
+alias kl='prox; kitchen login'
+alias kt='prox; kitchen test'
+alias kcv='kc;kv'
+alias kd='prox; kitchen destroy'
+
+create_server(){
+  mkdir ./newserver
+  cd newserver
+  kitchen init
+  vagrant init
+  echo "
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_solo
+
+platforms:
+  - name: centos-6.4
+
+suites:
+  - name: default
+    run_list:
+
+    attributes:" > .kitchen.yml
+  kitchen converge
+}
+
+
+function zip_project(){
+  zip -r "$1.zip" ./$1
+}
+
+
+function fileToString(){
+  `irb << eof
+File.open($1).read
+eof`
+}
+
+
+pushitrealgood(){
+  local ruborun=`rubocop -l`
+
+  if [[ $ruborun == *"no offenses detected"* ]]
+  then
+    echo "Go for it."
+    git push
+  else
+    echo "$ruborun"
+    read -p "You have some offenses, are you sure you want to push this crappy code? (y/n) " yn
+
+    if [ "$yn" = "y" ]
+    then
+      echo "I'm going to let you off this time with a warning..."
+      git push
+    elif [ "$yn" = "n" ]
+    then
+      echo "Good choice."
+    else
+      echo "Why would you ever think that '$yn' was either 'y' or 'n'?  I'm going to quit now, you think about what you did."
+    fi
+  fi
+}
+alias pirg='pushitrealgood'
+
+
+
+prox() {
+  DEFAULT_GATEWAY=$(route PRINT | grep ' 0\.0\.0\.0' | head -n 1 | awk '{print $4}')
+  ps -aWl | grep stunnel > /dev/null
+  stunnelresult=$?
+
+  if [[ $DEFAULT_GATEWAY == 3.* ]] ; then
+    PROXY="http-proxy.ae.ge.com:80"
+    echo "On GE Network setting proxy to $PROXY and unsetting git proxy settings"
+    export HTTP_PROXY=http://$PROXY
+    export HTTPS_PROXY=http://$PROXY
+    git config --global --unset http.proxy
+    git config --global --unset https.proxy
+  elif [ "${stunnelresult}" -eq "0" ] ; then
+    PROXY="127.0.0.1:31114"
+    echo "On GE MyApps"
+    git config --global https.proxy $PROXY
+    git config --global http.proxy $PROXY
+    export HTTP_PROXY=http://$PROXY
+    export HTTPS_PROXY=http://$PROXY
+  else
+    echo "Not on any GE network, unsetting everything"
+    git config --global --unset https.proxy
+    git config --global --unset http.proxy
+    unset HTTP_PROXY
+    unset HTTPS_PROXY
+  fi
+  echo "Proxy configured."
+}
+
+
+
+#Dev tools aliases
+alias syncRepo='ruby /c/dev/dev-tools/syncRepo/syncRepo.rb'
