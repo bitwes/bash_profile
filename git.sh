@@ -1,4 +1,5 @@
 alias git=hub
+alias gitcod='git checkout .'
 #----------------------
 #git
 #----------------------
@@ -34,4 +35,17 @@ function gh() {
   branch=${branch##refs/heads/}
   giturl=$giturl$branch
   `start $giturl`
+}
+
+function origin_to_upstream(){
+  `git remote remove upstream`
+  `git remote rename origin upstream`
+  `git remote add origin $1`
+  echo `git remote -v`
+}
+
+function upstream_to_origin(){
+  `git remote remove origin`
+  `git remote rename upstream origin`
+  echo `git remote -v`
 }
