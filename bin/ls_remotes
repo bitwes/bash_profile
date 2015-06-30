@@ -14,19 +14,24 @@ Usage
 -----
 ls_remotes [options]\n\n"
 
+$verbose = false
+
 BASE_URL = 'https://github.build.ge.com/'
 
 
 # Parse command line options
 def parse_options()
-  options = { :threshold => 100 }
+  options = { :threshold => 50,
+              :verbose => false}
 
   optparse = OptionParser.new do|opts|
     opts.banner = $banner
     opts.on( '-t N', '--threshold VAL', Integer, "If a remote has <= theshold dirs, they will be listed. -1 to print all.  Default #{options[:threshold]}" ) do |value|
       options[:threshold] = value
     end
-
+    opts.on('-v', '--verbose', 'Verbose output') do |v|
+      $verbose = v
+    end
     opts.on( '-h', '--help', 'Display this screen' ) do
       puts opts
       exit
@@ -40,6 +45,15 @@ rescue OptionParser::MissingArgument
   raise
 end
 
+#Only puts when verbose flag set
+def vputs(text)
+  puts text if $verbose
+end
+
+#Only prints when verbose flag set
+def vprint(text)
+  print text if $verbose
+end
 
 def get_remote_name(url)
   start_pos = url.index(BASE_URL)
@@ -62,18 +76,20 @@ def get_remotes()
   Dir.glob('./*/').each() do |dir|
     next if dir == '.' or dir == '..'
 
-    print "Processing directories...#{count}/#{num_dirs}\r" #some wizardry to print on same line
+    print "Processing directories...#{count}/#{num_dirs}\r" if !$verbose
     count += 1
 
     if(File.directory?(dir) and File.exists?(dir + '/.git'))
       Dir.chdir dir
       remotes = `git remote -v`.split("\n")
 
+      vprint(dir.ljust(25))
       remotes.each() do |remote|
         if(remote.index('(fetch)'))
           parts = remote.split("\t")
 
           remote_name = get_remote_name(parts[1])
+          vprint("[#{parts[0]} #{remote_name}]".ljust(20))
           if(remote_name != nil)
             index = parts[0] + ' - ' + remote_name
             if(to_return[index] == nil)
@@ -86,7 +102,7 @@ def get_remotes()
           end
         end
       end
-
+      vprint "\n"
       Dir.chdir '..'
     end
   end
@@ -97,7 +113,7 @@ end
 
 
 def print_remotes(remotes, threshold)
-  puts "\n\nRemotes"
+  puts "\n\nRemotes (Printing dirs for remotes with <= #{threshold} dirs)"
   sorted_keys = remotes.keys.sort
   sorted_keys.each do |key|
     puts "#{key} (#{remotes[key].size()})"
