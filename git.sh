@@ -1,5 +1,6 @@
 alias git=hub
 alias gitcod='git checkout .'
+
 #----------------------
 #git
 #----------------------
