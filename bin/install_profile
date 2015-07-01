@@ -1,6 +1,11 @@
 #/bin/bash
+
+# Below is the line to run to install everything!
+#
 #yum install git -y;git clone https://github.com/bitwes/bash_profile ~/bash_profile;~/bash_profile/bin/install_profile
+
+
 cat ~/bash_profile/templates/dot_bash_profile_entry >> ~/.bash_profile
 cp ~/bash_profile/templates/includes ~/bash_profile/includes
- ~/.bash_profile
+. ~/.bash_profile
 echo "Installed"
