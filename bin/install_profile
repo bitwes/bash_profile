@@ -1,11 +1,9 @@
 #/bin/bash
 
-# Below is the line to run to install everything!
-#
-#yum install git -y;git clone https://github.com/bitwes/bash_profile ~/bash_profile;~/bash_profile/bin/install_profile
-
+#See (or run) the print_install_command alias in the script 'main'
+#for a single line command that will download the bash_profile then
+#run this file
 
 cat ~/bash_profile/templates/dot_bash_profile_entry >> ~/.bash_profile
 cp ~/bash_profile/templates/includes ~/bash_profile/includes
-. ~/.bash_profile
-echo "Installed"
+echo "Load it up with ~/.bash_profile (can't do everything for you)"
