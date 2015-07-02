@@ -1,8 +1,8 @@
 #/bin/bash
 
-#See (or run) the print_install_command alias in the script 'main'
-#for a single line command that will download the bash_profile then
-#run this file
+# See (or run) the print_install_command alias in the script 'main'
+# for a single line command that will download the bash_profile then
+# run this file
 
 cat ~/bash_profile/templates/dot_bash_profile_entry >> ~/.bash_profile
 cp ~/bash_profile/templates/includes ~/bash_profile/includes
