@@ -22,12 +22,20 @@ BASE_URL = 'https://github.build.ge.com/'
 # Parse command line options
 def parse_options()
   options = { :threshold => 50,
-              :verbose => false}
+              :verbose => false,
+              :remotes => false,
+              :uncleans => false}
 
   optparse = OptionParser.new do|opts|
     opts.banner = $banner
     opts.on( '-t N', '--threshold VAL', Integer, "If a remote has <= theshold dirs, they will be listed. -1 to print all.  Default #{options[:threshold]}" ) do |value|
       options[:threshold] = value
+    end
+    opts.on('-r', '--remotes', 'List remotes') do |v|
+      options[:remotes] = v
+    end
+    opts.on('-u', '--uncleans', 'List unclean repos (the dirties)') do |v|
+      options[:uncleans] = v
     end
     opts.on('-v', '--verbose', 'Verbose output') do |v|
       $verbose = v
@@ -39,18 +47,24 @@ def parse_options()
   end
   optparse.parse!
 
+  if(!options[:remotes] and !options[:uncleans])
+    raise OptionParser::MissingArgument.new('Must specify either -r or -u')
+  end
+
   return options
 rescue OptionParser::MissingArgument
   puts optparse
   raise
 end
 
-#Only puts when verbose flag set
+
+# Only puts when verbose flag set
 def vputs(text)
   puts text if $verbose
 end
 
-#Only prints when verbose flag set
+
+# Only prints when verbose flag set
 def vprint(text)
   print text if $verbose
 end
@@ -69,10 +83,12 @@ def get_remote_name(url)
 end
 
 
+# Creates a hash of remotes, where each key has an array
+# of directories that have that remote.
 def get_remotes()
   to_return = {}
   count = 1
-  num_dirs = Dir.glob('./*/').size()
+  num_dirs = Dir.glob('./*/').size() -2 # exclude . and ..
   Dir.glob('./*/').each() do |dir|
     next if dir == '.' or dir == '..'
 
@@ -98,13 +114,13 @@ def get_remotes()
             to_return[index].push(dir)
           else
             puts "\nDon't know what to do with #{remote} in dir #{dir}"
-            next
           end
         end
-      end
+      end # end remotes loop
+
       vprint "\n"
       Dir.chdir '..'
-    end
+    end # end if file.directory
   end
 
   print "\n"
@@ -112,6 +128,9 @@ def get_remotes()
 end
 
 
+# Print the remote structure.  Takes in a hash of remtoes and a threshold.
+# if an entry in the remotes hash has a number of entries <= the threshold
+# then all the directories for that remote are listed.
 def print_remotes(remotes, threshold)
   puts "\n\nRemotes (Printing dirs for remotes with <= #{threshold} dirs)"
   sorted_keys = remotes.keys.sort
@@ -120,16 +139,57 @@ def print_remotes(remotes, threshold)
     if(remotes[key].size() <= threshold or threshold == -1)
       remotes[key].each do |value|
         puts "  * #{value}"
-      end
+        end
     end
   end
 end
 
 
+# Print the directory name and status if the directory is unclean.
+def print_dirties()
+  num_dirs = Dir.glob('./*/').size() -2 #exclude . and ..
+  count = 0
+  output = ""
+  dirties_found = false
+  Dir.glob('./*/').each() do |dir|
+    count += 1
+    next if dir == '.' or dir == '..'
+
+    print "Examining directories...#{count}/#{num_dirs}\r" if !$verbose
+    count += 1
+
+    if(File.directory?(dir) and File.exists?(dir + '/.git'))
+      Dir.chdir dir
+
+      status = `git status`
+      if (status.index('nothing to commit, working directory clean') == nil)
+        dirties_found = true
+        output += "\n------------------------------\n#{dir}\n------------------------------\n"
+        output += status + "\n"
+      end
+      Dir.chdir '..'
+    end
+  end # dir loop
+
+  if(dirties_found)
+    puts output
+  else
+    puts "All working directories clean"
+  end
+end
+
+# THE MAIN
 def main()
   options = parse_options()
-  remotes = get_remotes()
-  print_remotes(remotes, options[:threshold])
+
+  if(options[:remotes])
+    remotes = get_remotes()
+    print_remotes(remotes, options[:threshold])
+  end
+
+  if(options[:uncleans])
+    print_dirties()
+  end
 rescue OptionParser::MissingArgument
   puts $!
 end
