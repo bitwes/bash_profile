@@ -4,15 +4,20 @@ require 'optparse'
 $banner  = "\
 Description:
 ------------
-This will list all the remotes found in subdirectories of the current working directory.  \
-This script only goes one level deep.  The remotes will be listed with a count next to them.  \
-Use the -t option to specifiy a threshold.  Any directory with a remote found X number of times, where X is \
-less than the value specified by -t, will be pritned.
+Lists information about all git subdirectories in the current working directory.
+The following actions can be specified.
+  * remotes:    List all the remotes in a directory.  All git directories
+                are inspected and a list of all the remotes are outputted.
+                you can use the -t option to print the subdirectories that
+                have the remote, otherwise just the number of occurances
+                is listed
+  * unclean     List all git directories that have an unclean status.  The status
+                is also listed.
 
 
 Usage
 -----
-ls_remotes [options]\n\n"
+ls_remotes [command] [options]\n"
 
 $verbose = false
 
@@ -25,17 +30,14 @@ def parse_options()
               :verbose => false,
               :remotes => false,
               :uncleans => false}
+  options[:remotes] = ARGV[0] == 'remotes'
+  options[:uncleans] = ARGV[0] == 'unclean'
+
 
   optparse = OptionParser.new do|opts|
     opts.banner = $banner
     opts.on( '-t N', '--threshold VAL', Integer, "If a remote has <= theshold dirs, they will be listed. -1 to print all.  Default #{options[:threshold]}" ) do |value|
       options[:threshold] = value
-    end
-    opts.on('-r', '--remotes', 'List remotes') do |v|
-      options[:remotes] = v
-    end
-    opts.on('-u', '--uncleans', 'List unclean repos (the dirties)') do |v|
-      options[:uncleans] = v
     end
     opts.on('-v', '--verbose', 'Verbose output') do |v|
       $verbose = v
@@ -48,7 +50,7 @@ def parse_options()
   optparse.parse!
 
   if(!options[:remotes] and !options[:uncleans])
-    raise OptionParser::MissingArgument.new('Must specify either -r or -u')
+    raise OptionParser::MissingArgument.new('Must specify an action:  remotes, unclean')
   end
 
   return options
