@@ -11,7 +11,7 @@ The following actions can be specified.
                 you can use the -t option to print the subdirectories that
                 have the remote, otherwise just the number of occurances
                 is listed
-  * unclean     List all git directories that have an unclean status.  The status
+  * status      List all git directories that have an unclean status.  The status
                 is also listed.
 
 
@@ -29,9 +29,9 @@ def parse_options()
   options = { :threshold => 50,
               :verbose => false,
               :remotes => false,
-              :uncleans => false}
+              :status => false}
   options[:remotes] = ARGV[0] == 'remotes'
-  options[:uncleans] = ARGV[0] == 'unclean'
+  options[:status] = ARGV[0] == 'status'
 
 
   optparse = OptionParser.new do|opts|
@@ -49,7 +49,7 @@ def parse_options()
   end
   optparse.parse!
 
-  if(!options[:remotes] and !options[:uncleans])
+  if(!options[:remotes] and !options[:status])
     raise OptionParser::MissingArgument.new('Must specify an action:  remotes, unclean')
   end
 
@@ -189,7 +189,7 @@ def main()
     print_remotes(remotes, options[:threshold])
   end
 
-  if(options[:uncleans])
+  if(options[:status])
     print_dirties()
   end
 rescue OptionParser::MissingArgument
