@@ -230,16 +230,18 @@ export VISUAL=emacs
 # Below is the line to run to install everything!
 #                                                    |            #get my stuff                                      |#todo change in git                         |
 alias print_profile_install='echo "yum install git -y;git clone https://github.com/bitwes/bash_profile ~/bash_profile;chmod 777 ~/bash_profile/bin/install_profile;~/bash_profile/bin/install_profile"'
-alias copy_profile_install='print_install_command > /dev/clipboard'
+alias copy_profile_install='print_profile_install > /dev/clipboard'
 
 get_configs(){
   git clone https://github.com/bitwes/VariousConfigs ~/VariousConfigs
   if [ $1 == 'linux' ]; then
     cp ~/VariousConfigs/linux/.* ~/
   fi
+
 }
 
 setup_linux(){
   yum install nano -y
   get_configs 'linux'
+  wget https://nanosyntax.googlecode.com/svn/trunk/syntax-nanorc/xml.nanorc
 }
