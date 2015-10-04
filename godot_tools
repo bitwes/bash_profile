@@ -1,0 +1,10 @@
+#!/bin/bash
+# $1 = the name of the script
+# $2 = pattern for functions (optional)
+list_functions(){
+	if [ "$2" == "" ]; then
+		find ./ -name $1 -exec cat {} \; |  grep -nr 'func '
+	else
+		find ./ -name $1 -exec cat {} \; |  grep -nr 'func ' | grep $2
+	fi
+}
