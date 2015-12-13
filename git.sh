@@ -1,4 +1,4 @@
-alias git=hub
+#alias git=hub
 alias gitcod='git checkout .'
 
 #----------------------

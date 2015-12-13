@@ -3,8 +3,16 @@
 # $2 = pattern for functions (optional)
 list_functions(){
 	if [ "$2" == "" ]; then
-		find ./ -name $1 -exec cat {} \; |  grep -nr 'func '
+		find ./ -name $1 -exec cat {} \; |  grep -n 'func '
 	else
-		find ./ -name $1 -exec cat {} \; |  grep -nr 'func ' | grep $2
+		find ./ -name $1 -exec cat {} \; |  grep -n 'func ' | grep $2
 	fi
 }
+
+export GODOT_BIN='/e/butch/development/godot/bin/Godot_v2.0_alpha_20150930_win64.exe'
+
+alias godot_loc="find . -name '*.gd' | xargs wc -l"
+alias godot=$GODOT_BIN
+export GAME_UNIT_TESTS='poopGame/unit_tests/unit_tests.scn'
+alias gut='godot -d -s scripts/gut_cmdln.gd -gdir=res://unit_tests -gexit -gignore_pause'
+alias comgut='godot -d -s bitwes_tools/scripts/gut_cmdln.gd -gutloc=res://bitwes_tools/scripts/gut.gd -gdir=res://poopGame/unit_tests -gignore_pause -gexit'
