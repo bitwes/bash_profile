@@ -16,3 +16,18 @@ alias godot=$GODOT_BIN
 export GAME_UNIT_TESTS='poopGame/unit_tests/unit_tests.scn'
 alias gut='godot -d -s scripts/gut_cmdln.gd -gdir=res://unit_tests -gexit -gignore_pause'
 alias comgut='godot -d -s bitwes_tools/scripts/gut_cmdln.gd -gutloc=res://bitwes_tools/scripts/gut.gd -gdir=res://poopGame/unit_tests -gignore_pause -gexit'
+
+godot_accessor(){
+	name=${1#"_"}
+	tab=$'\t'
+
+	read -r -d '' OUTPUT  <<EOM
+func get_$name():
+${tab}return $1
+
+func set_$name($name):
+${tab}$1 = $name
+EOM
+  echo "$OUTPUT"
+	echo "$OUTPUT" | clip
+}
