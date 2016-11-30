@@ -1,4 +1,4 @@
-alias git=hub
+#alias git=hub
 alias gitcod='git checkout .'
 
 #----------------------
@@ -30,12 +30,14 @@ function gh() {
   fi
 
   giturl=${giturl/git\@github\.com\:/https://github.com/}
+  giturl=${giturl/git\@github\.build\.ge\.com\:/https://github\.build\.ge\.com/}
   giturl=${giturl/\.git/\/tree/}
   branch="$(git symbolic-ref HEAD 2>/dev/null)" ||
   branch="(unnamed branch)"     # detached HEAD
   branch=${branch##refs/heads/}
   giturl=$giturl$branch
-  `start $giturl`
+
+  `open $giturl`
 }
 
 function origin_to_upstream(){

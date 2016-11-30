@@ -1,8 +1,7 @@
 #!/bin/bash
 PATH=$PATH:/c/bin/hub:/c/Program\ Files/Sublime\ Text\ 2/
 PATH=$PATH:/c/Program\ Files/Putty/
-dot_it ge.sh
-dot_it git.sh
+
 alias rt='renewToken.rb'
 alias local_yml='cp ~/development/template.kitchen.local.yml ./.kitchen.local.yml'
 alias irb='ruby -S irb'
