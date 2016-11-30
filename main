@@ -224,8 +224,8 @@ mkcd(){
 }
 
 #make emacs default editor
-export EDITOR=emacs
-export VISUAL=emacs
+export EDITOR=atom
+export VISUAL=atom
 
 # Below is the line to run to install everything!
 #                                                    |            #get my stuff                                      |#todo change in git                         |

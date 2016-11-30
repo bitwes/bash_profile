@@ -1,0 +1,32 @@
+#!/bin/bash
+ 
+# kitchen functions
+ 
+export DOCKER_HOST=tcp://192.168.59.103:2376
+export DOCKER_CERT_PATH=~/.boot2docker/certs/boot2docker-vm
+export DOCKER_TLS_VERIFY=1
+export SSL_CERT_FILE=/c/opscode/chefdk/embedded/ssl/certs/cacert.pem
+
+# vagrant ssh info
+alias vssh='(cd .kitchen/kitchen-vagrant/*/; vagrant ssh-config)'
+alias renewToken='/c/dev/renewToken.rb/renewToken.rb'
+alias kd='function _stupid_bash(){ export KITCHEN_DRIVER=$1; };_stupid_bash'
+
+function kyaml {
+  local k_yaml="../local-dev/.kitchen.$1.yml"
+  local kl_yaml="../local-dev/.kitchen.local.$1.yml"
+  if [ -e $k_yaml ]; then
+    export KITCHEN_YAML=$k_yaml
+  fi
+  if [ -e $kl_yaml ]; then
+    export KITCHEN_LOCAL_YAML=$kl_yaml
+  fi
+  echo "KITCHEN_YAML = $KITCHEN_YAML"
+  echo "KITCHEN_LOCAL_YAML = $KITCHEN_LOCAL_YAML"
+}
+
+#----------------------
+#Kitchen
+#----------------------
+alias kitconv='kitchen converge > converge_log.txt & 
+tail -f converge_log.txt'
