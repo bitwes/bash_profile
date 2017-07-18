@@ -1,0 +1,50 @@
+#!/bin/bash
+
+export GAME='/Users/butchwesley/development/godot/comedyTheGame/godotcomedygame/game'
+export GAME_UNIT_TESTS='poopGame/unit_tests/unit_tests.scn'
+
+#alias godot='open -n /Applications/Godot.app --args '
+alias godot='/Applications/Godot.app/Contents/MacOS/Godot'
+#alias gut="godot -path $PWD -d -s test/gut/gut_cmdln.gd -gdir=res://test/unit -gexit -gignore_pause"
+#alias comgut="godot -path $PWD -d -s res://bitwes_tools/scripts/gut_cmdln.gd -gutloc=res://bitwes_tools/scripts/gut.gd -gdir=res://poopGame/test/unit,res://poopGame/test/integration -gignore_pause -gexit"
+alias ngodot='open -n /Applications/Godot.app'
+
+gut(){
+  local script=''
+  if [ $1 ]; then
+    script=" -gselect=$1 "
+  fi
+
+  local t=''
+  if [ $2 ]; then
+    t=" -gunit_test_name=$2"
+  fi
+
+  local options="-path $PWD -d -s addons/Gut/gut_cmdln.gd -s addons/Gut/gut_cmdln.gd -gignore_pause -gdir=res://test/unit $script $t"
+  #echo $options
+  godot $options
+}
+
+
+comgut(){
+
+  local script=''
+  if [ $1 ]; then
+    script=" -gselect=$1 "
+  fi
+
+  local t=''
+  if [ $2 ]; then
+    t=" -gunit_test_name=$2"
+  fi
+
+  local options="-path $PWD -d -s res://addons/Gut/gut_cmdln.gd -gutloc=res://addons/gut/gut.gd -gdir=res://poopGame/test/unit,res://poopGame/test/integration -gignore_pause -gexit $script $t"
+  #echo $options
+  godot $options
+}
+
+accessors(){
+  local text="func get_$1():\n\treturn _$1\n\nfunc set_$1($1):\n\t_$1 = $1\n"
+  echo -e $text
+  echo -e $text | pbcopy
+}
