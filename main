@@ -52,7 +52,7 @@ alias lssharedw='find . -maxdepth 1 -perm /022 | xargs ls -ld '
 alias llext="find . -maxdepth 1 -type f -name \"*.*\" | awk -F. '{print \$NF}' | sort -u"
 alias llbyext='llext | _ls_by_extension'
 
-alias lld='lsd -lh'
+alias lld='ls -ld */'
 alias lldot='l. -lh'
 
 alias perldebug='perl -d -e 1'

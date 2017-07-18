@@ -1,0 +1,20 @@
+#!/bin/bash
+
+clean_run_dsl(){
+  rm -rf ./job-dsl-plugin
+  cp -ir ../job-dsl-plugin ./job-dsl-plugin
+  cd job-dsl-plugin
+  ./gradlew :job-dsl-core:oneJar
+  DSL_JAR=$(find job-dsl-core -name '*standalone.jar'|tail -1)
+  java -jar $DSL_JAR $1
+  cd -
+}
+
+
+run_dsl(){
+  cd job-dsl-plugin
+  DSL_JAR=$(find job-dsl-core -name '*standalone.jar'|tail -1)
+  echo $DSL_JAR
+  java -jar $DSL_JAR "../$1"
+  cd -
+}
