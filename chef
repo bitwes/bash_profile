@@ -6,3 +6,9 @@ alias Kls="ruby ~/bash_profile/chef_tools.rb 'kls'"
 
 alias rmBerksfileLock='rm ./Berksfile.lock'
 alias reberks='rmBerksfileLock; berks install'
+
+alias kls='kitchen list'
+alias kl='kitchen login'
+alias kv='kitchen verify'
+alias kc='kitchen converge'
+alias kd='kitchen destroy'
