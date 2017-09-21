@@ -57,6 +57,10 @@ alias lldot='l. -lh'
 
 alias perldebug='perl -d -e 1'
 alias perl='perl -w'
+
+alias tls='tmux ls'
+alias tn='tmux new -s'
+alias ta='tmux attach -t'
 #------------------------------------------------------
 #used by cls, shouldn't be called alone
 #------------------------------------------------------
