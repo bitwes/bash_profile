@@ -12,3 +12,6 @@ alias kl='kitchen login'
 alias kv='kitchen verify'
 alias kc='kitchen converge'
 alias kd='kitchen destroy'
+
+
+alias clear_nodes='rm -rf ./test/integration/nodes'

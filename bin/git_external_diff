@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Git default parameters passed for search:
+path=$1
+old_file=$2
+old_hex=$3
+old_mode=$4
+new_file=$5
+new_hex=$6
+new_mode=$7
+
+# samples from https://stackoverflow.com/questions/7669963/how-can-i-get-a-side-by-side-diff-when-i-do-git-diff
+  #un-comment one diff tool you'd like to use
+
+  # -- side-by-side diff with custom options:
+  # /usr/bin/sdiff -w200 -l "$2" "$5"
+``
+  # -- using kdiff3 as the side-by-side diff:
+  # /usr/bin/kdiff3 "$2" "$5"
+
+  # -- using Meld
+  # /usr/bin/meld "$2" "$5"
+
+  # -- using VIM
+  # /usr/bin/vim -d "$2" "$5"
+
+echo '-----------------------------'
+echo " $path"
+echo '-----------------------------'
+
+if [ ! -s "$new_file" ]; then
+  echo "$new_file ** EMPTY **"
+elif [ ! -s "$old_file" ]; then
+  echo "$old_file ** EMPTY **"
+else
+  /usr/bin/sdiff -w200 -lbWBs "$old_file" "$new_file"
+fi;
+echo ''
+exit 0
