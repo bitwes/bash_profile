@@ -1,0 +1,124 @@
+#!/usr/bin/env ruby
+
+require 'pp'
+require 'optparse'
+require 'tty-cursor'
+
+$banner  = "\
+Description:
+------------
+Usage
+-----
+\n"
+$files = nil
+$index = -1
+$last_pid = nil
+
+# Parse command line options
+def parse_options()
+  options = {}
+
+  optparse = OptionParser.new do|opts|
+    opts.banner = $banner
+    # opts.on( '-t N', '--threshold VAL', Integer, "If a remote has <= theshold dirs, they will be listed. -1 to print all.  Default #{options[:threshold]}" ) do |value|
+    #   options[:threshold] = value
+    # end
+    # opts.on('-v', '--verbose', 'Verbose output') do |v|
+    #   $verbose = v
+    # end
+    opts.on( '-h', '--help', 'Display this screen' ) do
+      puts opts
+      exit
+    end
+  end
+  optparse.parse!
+
+  return options
+rescue OptionParser::MissingArgument
+  puts optparse
+  raise
+end
+
+def get_input
+  begin
+    system("stty raw -echo")
+    str = STDIN.getc
+  ensure
+    system("stty -raw echo")
+  end
+  str.chr
+end
+
+def kill_last_play
+  if($last_pid != nil)
+    Process.kill("HUP", $last_pid)
+  end
+end
+
+def play_file(file)
+  kill_last_play
+  $last_pid = spawn("afplay \"#{file}\"")
+  Process.detach($last_pid)
+end
+
+def cursorsstuff
+  cursor = TTY::Cursor
+  options = parse_options
+  print get_input.to_s
+  a = get_input
+  #print cursor.column(0)
+  print cursor.clear_line
+  print a
+end
+
+def show_current
+  puts $files[$index]
+end
+
+def nextf
+  $index += 1
+  if($index >= $files.length)
+    $index = $files.length - 1
+  end
+  show_current
+end
+
+def previous
+  $index -= 1
+  if($index < 0)
+    $index = 0
+  end
+  show_current
+end
+
+
+def process_input
+  i = get_input.downcase
+
+  while(i != 'q')
+    if(i == 'b')
+      previous
+    elsif(i == 'f')
+      nextf
+    elsif(i == 'p')
+      play_file($files[$index])
+    end
+
+    i = get_input.downcase
+  end
+  kill_last_play
+end
+
+def populate_files
+  $files = Dir.entries('./')
+  $files.delete('.')
+  $files.delete('..')
+end
+
+def main
+  populate_files
+  nextf
+  process_input
+end
+
+main
