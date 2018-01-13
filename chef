@@ -1,1 +1,17 @@
+#!/bin/bash
+
 alias local_chefrun='sudo -E /opt/chef/bin/chef-client --local-mode --config /tmp/kitchen/client.rb --log_level auto --force-formatter --no-color --json-attributes /tmp/kitchen/dna.json --chef-zero-port 8889'
+
+alias Kls="ruby ~/bash_profile/chef_tools.rb 'kls'"
+
+alias rmBerksfileLock='rm ./Berksfile.lock'
+alias reberks='rmBerksfileLock; berks install'
+
+alias kls='kitchen list'
+alias kl='kitchen login'
+alias kv='kitchen verify'
+alias kc='kitchen converge'
+alias kd='kitchen destroy'
+
+
+alias clear_nodes='rm -rf ./test/integration/nodes'

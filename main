@@ -52,11 +52,15 @@ alias lssharedw='find . -maxdepth 1 -perm /022 | xargs ls -ld '
 alias llext="find . -maxdepth 1 -type f -name \"*.*\" | awk -F. '{print \$NF}' | sort -u"
 alias llbyext='llext | _ls_by_extension'
 
-alias lld='lsd -lh'
+alias lld='ls -ld */'
 alias lldot='l. -lh'
 
 alias perldebug='perl -d -e 1'
 alias perl='perl -w'
+
+alias tls='tmux ls'
+alias tn='tmux new -s'
+alias ta='tmux attach -t'
 #------------------------------------------------------
 #used by cls, shouldn't be called alone
 #------------------------------------------------------
@@ -244,4 +248,9 @@ setup_linux(){
   yum install nano -y
   get_configs 'linux'
   wget https://nanosyntax.googlecode.com/svn/trunk/syntax-nanorc/xml.nanorc
+}
+
+# Set the title of the tab and window in iterm2
+function title {
+    echo -ne "\033]0;"$*"\007"
 }

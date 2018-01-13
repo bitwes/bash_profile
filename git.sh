@@ -52,3 +52,6 @@ function upstream_to_origin(){
   `git remote rename upstream origin`
   echo `git remote -v`
 }
+
+GIT_EXTERNAL_DIFF=$BASHFILES/bin/git_external_diff
+export GIT_EXTERNAL_DIFF

@@ -1,0 +1,7 @@
+set_say_name(){
+  alias say="say -v '$*' "
+}
+
+show_say_name() {
+  say -v ?
+}
