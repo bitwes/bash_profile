@@ -22,7 +22,7 @@ func set_$name($name):
 ${tab}$1 = $name
 EOM
   echo "$OUTPUT"
-	echo "$OUTPUT" | clip
+	echo "$OUTPUT" | pbcopy
 }
 
 alias godot_loc="find . -name '*.gd' | xargs wc -l"

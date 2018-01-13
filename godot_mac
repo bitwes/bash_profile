@@ -8,20 +8,24 @@ alias godot='/Applications/Godot.app/Contents/MacOS/Godot'
 #alias gut="godot -path $PWD -d -s test/gut/gut_cmdln.gd -gdir=res://test/unit -gexit -gignore_pause"
 #alias comgut="godot -path $PWD -d -s res://bitwes_tools/scripts/gut_cmdln.gd -gutloc=res://bitwes_tools/scripts/gut.gd -gdir=res://poopGame/test/unit,res://poopGame/test/integration -gignore_pause -gexit"
 alias ngodot='open -n /Applications/Godot.app'
-
+alias play_game='godot -path /Users/butchwesley/development/godot/comedyTheGame/godotcomedygame/game'
+alias gut_readme_samples='godot -path $PWD -d -s addons/Gut/gut_cmdln.gd -gignore_pause -gdir=res://test/samples/ -gexit -gselect=test_readme_examples.gd'
 gut(){
   local script=''
   if [ $1 ]; then
     script=" -gselect=$1 "
+  else
+    script=""
   fi
 
   local t=''
   if [ $2 ]; then
-    t=" -gunit_test_name=$2"
+    test=" -gunit_test_name=$2"
+  else
+    test=""
   fi
 
-  local options="-path $PWD -d -s addons/Gut/gut_cmdln.gd -s addons/Gut/gut_cmdln.gd -gignore_pause -gdir=res://test/unit $script $t"
-  #echo $options
+  local options="-path $PWD -d -s addons/Gut/gut_cmdln.gd -gdir=res://test/unit -gexit $script $test"
   godot $options
 }
 
@@ -38,7 +42,7 @@ comgut(){
     t=" -gunit_test_name=$2"
   fi
 
-  local options="-path $PWD -d -s res://addons/Gut/gut_cmdln.gd -gutloc=res://addons/gut/gut.gd -gdir=res://poopGame/test/unit,res://poopGame/test/integration -gignore_pause -gexit $script $t"
+  local options="-path $PWD -d -s res://addons/Gut/gut_cmdln.gd -gutloc=res://addons/gut/gut.gd -gdir=res://poopGame/test/unit,res://poopGame/test/integration -gignore_pause -gexit $script $t $3 ${@:3}"
   #echo $options
   godot $options
 }
