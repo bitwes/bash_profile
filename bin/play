@@ -197,6 +197,10 @@ def main
   parse_options
   populate_files
 
+  if($options[:show] == 0 or $options[:show] > $files.length)
+    $options[:show] = $files.length
+  end
+
   # If a song was passed in then play it (if it exists).  Otherwise show
   # the first file (the nextf calls)
   if(ARGV.length > 0)
