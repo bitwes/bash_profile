@@ -8,8 +8,8 @@ $banner  = "\
 Description:
 ------------
 This is a simple wrapper around afplay.  It allows you to cycle through all the
-files in a directory and play them.  It's a quick and dirty tool that might
-behave badly if you aren't careful, but it works.
+files in a directory and play them.  It's a quick and dirty tool.  It doesn't
+like if you try to play a file that afplay doesn't like, so be careful.
 
 Takes an optional filename argument to start playing.
 
@@ -140,6 +140,7 @@ def paint
     playing = $files[$playing_index]
   end
 
+  # on first paint we can't clear the screen
   if($has_painted)
     clear_screen
   end
