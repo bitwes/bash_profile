@@ -26,6 +26,7 @@ $has_painted = false
 $options = {
   show:10
 }
+
 # Parse command line options
 def parse_options()
   options = {}
@@ -86,16 +87,12 @@ def play_current
 end
 
 def print_controls
-  puts "f-forward  b-back  s-stop  p-play  s-stop  q-quit"
-  puts "-------------------------------------------------"
+  puts "f-forward  b-back  s-stop  p-play  q-quit"
+  puts "-----------------------------------------"
 end
 
 def clear_screen
-  # 4 lines
-  #   2 for options
-  #   1 now playing
-  #   1 current file
-  # we are on the 4th line so go up 3
+  # 4 for current line, now playihng and controls
   print $cursor.up(4 + $options[:show])
   # clear next 4 lines
   for i in 0..(3 + $options[:show])
@@ -151,6 +148,7 @@ def paint
   print_file_list
 end
 
+# next is a keyword so named it nextf
 def nextf
   $index += 1
   if($index >= $files.length)
