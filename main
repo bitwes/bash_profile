@@ -254,3 +254,15 @@ setup_linux(){
 function title {
     echo -ne "\033]0;"$*"\007"
 }
+
+# Runs a passed in command in each of the first level subdirectories
+# of the current directory.  This will not run anything in a subdirectory
+# of a subdirectory of the current directory.
+function run_dir(){
+  for dir in ./*
+  do
+    test -d "$dir" || continue
+    echo "*** $dir"
+    ( cd $dir && $1 )
+  done
+}

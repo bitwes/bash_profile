@@ -62,7 +62,8 @@ end
 def stop
   if($last_pid != nil)
     begin
-      Process.kill("HUP", $last_pid)
+      #Process.kill("HUP", $last_pid)
+      `killall afplay`
       $last_pid = nil
     rescue
       # this rescue is gross.  I didn't feel like figuring out how to watch
