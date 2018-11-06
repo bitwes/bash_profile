@@ -61,6 +61,9 @@ alias perl='perl -w'
 alias tls='tmux ls'
 alias tn='tmux new -s'
 alias ta='tmux attach -t'
+
+alias loc="find . -name '*.java' ! -path '*./target/*'| xargs wc -l"
+alias loc="find . -name '*.java' ! -path '*./target/*' ! -path '*test*' | xargs wc -l"
 #------------------------------------------------------
 #used by cls, shouldn't be called alone
 #------------------------------------------------------
