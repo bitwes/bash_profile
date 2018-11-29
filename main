@@ -17,9 +17,9 @@ alias cdu6='cd ../../../../../../'
 alias cdu7='cd ../../../../../../../'
 alias cdu8='cd ../../../../../../../../'
 alias cdu9='cd ../../../../../../../../../'
-alias dirs='dirs -v'
-alias cd-='cd -'
 
+alias cd-='cd -'
+alias dirs='dirs -v'
 #various
 alias dot='. ~/.bash_profile'
 alias ec='emacs '
@@ -64,11 +64,13 @@ alias ta='tmux attach -t'
 
 alias loc="find . -name '*.java' ! -path '*./target/*'| xargs wc -l"
 alias loc="find . -name '*.java' ! -path '*./target/*' ! -path '*test*' | xargs wc -l"
+
+alias abash='atom $BASHFILES'
 #------------------------------------------------------
 #used by cls, shouldn't be called alone
 #------------------------------------------------------
 _cls_from_file(){
-  echo "${txtred}"
+  echo "${txtred}"or
   cat "$1"
   echo "${txtrst}"
 }
