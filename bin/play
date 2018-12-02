@@ -64,12 +64,9 @@ def stop
     begin
       Process.kill("HUP", $last_pid)
       $last_pid = nil
-    rescue
-      # this rescue is gross.  I didn't feel like figuring out how to watch
-      # for signals to finish processing so this rescue is SUPPOSED to just
-      # catch the error when the signal does not exist anymore.  I got lazy and
-      # just caught everything.  To be honest, I have no idea what 'HUP' means
-      # and I'm not really sure what this function does.
+    rescue Errno::ESRCH
+      # We don't periodically check if the pid for the last play is around so
+      # we just catch the error that the pid we created doesn't exist anymore.
     end
   end
   $playing_index = nil

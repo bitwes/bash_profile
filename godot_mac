@@ -2,14 +2,21 @@
 
 export GAME='/Users/butchwesley/development/godot/comedyTheGame/godotcomedygame/game'
 export GAME_UNIT_TESTS='poopGame/unit_tests/unit_tests.scn'
-
+export GAME30='/Users/butchwesley/development/godot/comedyTheGame/godot30_conversion/comedy_godot30/game'
 #alias godot='open -n /Applications/Godot.app --args '
 alias godot='/Applications/Godot.app/Contents/MacOS/Godot'
+alias godot30='/Applications/Godot_3_0.app/Contents/MacOS/Godot'
+alias godot31='/Applications/Godot_3_1.app/Contents/MacOS/Godot'
 #alias gut="godot -path $PWD -d -s test/gut/gut_cmdln.gd -gdir=res://test/unit -gexit -gignore_pause"
 #alias comgut="godot -path $PWD -d -s res://bitwes_tools/scripts/gut_cmdln.gd -gutloc=res://bitwes_tools/scripts/gut.gd -gdir=res://poopGame/test/unit,res://poopGame/test/integration -gignore_pause -gexit"
 alias ngodot='open -n /Applications/Godot.app'
 alias play_game='godot -path /Users/butchwesley/development/godot/comedyTheGame/godotcomedygame/game'
 alias gut_readme_samples='godot -path $PWD -d -s addons/Gut/gut_cmdln.gd -gignore_pause -gdir=res://test/samples/ -gexit -gselect=test_readme_examples.gd'
+export GODOT30_USER="/Users/butchwesley/Library/Application Support/Godot/app_userdata/"
+export GODOT_USER='~/.godot/app_userdata'
+move_to_30(){
+  mv $1 $GAME30/$1
+}
 gut(){
   local script=''
   if [ $1 ]; then
@@ -29,6 +36,25 @@ gut(){
   godot $options
 }
 
+gut30(){
+  local script=''
+  if [ $1 ]; then
+    script=" -gselect=$1 "
+  else
+    script=""
+  fi
+
+  local t=''
+  if [ $2 ]; then
+    test=" -gunit_test_name=$2"
+  else
+    test=""
+  fi
+
+  local options="--debug-collisions --path $PWD -d -s addons/gut/gut_cmdln.gd -gdir=res://test/unit,res://test/integration -glog=1 -gexit $script $test $3 ${@:3}"
+  echo $options
+  godot30 $options
+}
 
 comgut(){
 
