@@ -3,5 +3,5 @@ set_say_name(){
 }
 
 show_say_name() {
-  say -v ?
+  say -v '?'
 }

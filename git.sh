@@ -53,5 +53,25 @@ function upstream_to_origin(){
   echo `git remote -v`
 }
 
+
+function master_diff(){
+  local file=''
+
+  if [ $1 ]; then
+    file=`find ./ -iname "$1"`
+    match_count=`find ./ -iname "$1" | wc -l`
+    echo $match_count
+    if [ "$match_count" -eq "1" ]; then
+      git diff master $file
+    else
+      git diff master "*$1*"
+    fi
+  else
+    git diff master
+  fi
+
+}
+
+
 GIT_EXTERNAL_DIFF=$BASHFILES/bin/git_external_diff
 export GIT_EXTERNAL_DIFF

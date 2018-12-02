@@ -14,7 +14,7 @@ new_mode=$7
 
   # -- side-by-side diff with custom options:
   # /usr/bin/sdiff -w200 -l "$2" "$5"
-``
+
   # -- using kdiff3 as the side-by-side diff:
   # /usr/bin/kdiff3 "$2" "$5"
 
@@ -29,10 +29,13 @@ echo " $path"
 echo '-----------------------------'
 
 if [ ! -s "$new_file" ]; then
-  echo "$new_file ** EMPTY **"
+  echo "$new_file ** Deleted File **"
 elif [ ! -s "$old_file" ]; then
-  echo "$old_file ** EMPTY **"
+  echo "$old_file ** New File **"
 else
+  #`/Applications/IntelliJ\ IDEA\ CE.app/Contents/MacOS/idea diff $old_file $new_file`
+  #sdiff -w200 -bBdlsW  <(cat -n "$old_file") <(cat -n "$new_file")
+  #sdiff -w200 -lbWBs "$old_file" "$new_file" | cat -n | grep -v -e '($'
   /usr/bin/sdiff -w200 -lbWBs "$old_file" "$new_file"
 fi;
 echo ''

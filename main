@@ -17,9 +17,9 @@ alias cdu6='cd ../../../../../../'
 alias cdu7='cd ../../../../../../../'
 alias cdu8='cd ../../../../../../../../'
 alias cdu9='cd ../../../../../../../../../'
-alias dirs='dirs -v'
-alias cd-='cd -'
 
+alias cd-='cd -'
+alias dirs='dirs -v'
 #various
 alias dot='. ~/.bash_profile'
 alias ec='emacs '
@@ -61,11 +61,16 @@ alias perl='perl -w'
 alias tls='tmux ls'
 alias tn='tmux new -s'
 alias ta='tmux attach -t'
+
+alias loc="find . -name '*.java' ! -path '*./target/*'| xargs wc -l"
+alias loc="find . -name '*.java' ! -path '*./target/*' ! -path '*test*' | xargs wc -l"
+
+alias abash='atom $BASHFILES'
 #------------------------------------------------------
 #used by cls, shouldn't be called alone
 #------------------------------------------------------
 _cls_from_file(){
-  echo "${txtred}"
+  echo "${txtred}"or
   cat "$1"
   echo "${txtrst}"
 }
@@ -253,4 +258,16 @@ setup_linux(){
 # Set the title of the tab and window in iterm2
 function title {
     echo -ne "\033]0;"$*"\007"
+}
+
+# Runs a passed in command in each of the first level subdirectories
+# of the current directory.  This will not run anything in a subdirectory
+# of a subdirectory of the current directory.
+function run_dir(){
+  for dir in ./*
+  do
+    test -d "$dir" || continue
+    echo "*** $dir"
+    ( cd $dir && $1 )
+  done
 }
